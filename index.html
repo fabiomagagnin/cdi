@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora CDI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 15px;
+            }
+
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Formulário</h2>
+        <form action="https://www3.bcb.gov.br/CALCIDADAO/publico/corrigirPeloCDI.do?method=corrigirPeloCDI"
+            method="post">
+            <label for="dataInicial">Data Inicial (dd/mm/aaaa)</label>
+            <input type="text" id="dataInicial" name="dataInicial" placeholder="Ex: 01/01/2024" value="">
+
+            <label for="dataFinal">Data Final (dd/mm/aaaa)</label>
+            <input type="text" id="dataFinal" name="dataFinal" placeholder="Ex: 31/12/2024" value="">
+
+            <label for="valor">Valor</label>
+            <input type="text" id="valor" name="valorCorrecao" placeholder="Digite o valor" value="100,00">
+
+            <label for="valorCdi">Valor CDI</label>
+            <input type="text" id="valorCdi" name="percentualCorrecao" placeholder="Digite o valor CDI" value="100,00">
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</body>
+
+<script>
+    function aplicarMascaraData(input) {
+        let valor = input.value;
+        valor = valor.replace(/\D/g, ""); // Remove tudo que não for dígito
+        if (valor.length > 2) {
+            valor = valor.replace(/^(\d{2})(\d)/, "$1/$2"); // Adiciona a primeira barra
+        }
+        if (valor.length > 5) {
+            valor = valor.replace(/(\d{2})\/(\d{2})(\d)/, "$1/$2/$3"); // Adiciona a segunda barra
+        }
+        input.value = valor;
+    }
+
+    function aplicarMascaraValor(input) {
+        let valor = input.value;
+
+        // Remove tudo que não for número
+        valor = valor.replace(/\D/g, "");
+
+        // Se houver dígitos, formata o número
+        if (valor.length > 0) {
+            // Adiciona os centavos sempre com duas casas
+            valor = (valor / 100).toFixed(2) + "";
+
+            // Divide a parte inteira e a decimal
+            valor = valor.replace(".", ",");
+
+            // Adiciona ponto a cada três dígitos da parte inteira
+            valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        // Atualiza o campo de entrada com o valor formatado
+        input.value = valor;
+    }
+
+    // Aplicar a máscara de data nos campos de data inicial e final
+    document.getElementById('dataInicial').addEventListener('input', function () {
+        aplicarMascaraData(this);
+    });
+
+    document.getElementById('dataFinal').addEventListener('input', function () {
+        aplicarMascaraData(this);
+    });
+
+    // Aplicar a máscara de valor nos campos de valor e valor CDI
+    document.getElementById('valor').addEventListener('input', function () {
+        aplicarMascaraValor(this);
+    });
+
+    document.getElementById('valorCdi').addEventListener('input', function () {
+        aplicarMascaraValor(this);
+    });
+</script>
+
+</html>
