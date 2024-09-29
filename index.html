@@ -6,32 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora CDI</title>
     <style>
-        html {
+        * {
+            box-sizing: border-box;
+            /* Ajusta o modelo de caixa */
+        }
+
+        html,
+        body {
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            /* Previne a rolagem horizontal */
+            height: 100%;
+            /* Adicionando altura total ao body */
         }
 
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            /* Muda para coluna para alinhar ao topo */
+            justify-content: flex-start;
+            /* Alinha o conteúdo ao topo */
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
+            /* Centraliza horizontalmente */
             background-color: #f4f4f4;
-            overflow-x: hidden;
         }
 
         .form-container {
             background-color: white;
             padding: 20px;
-            margin: 5px;
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+            max-width: 90%;
+            /* Ajusta a largura máxima para 90% */
             width: 100%;
+            margin-top: 20px;
+            /* Adiciona espaço no topo do formulário */
         }
 
         h2 {
@@ -45,15 +56,16 @@
             font-weight: bold;
         }
 
-        input[type="tel"],
-        input[type="text"] {
+        input[type="text"],
+        input[type="tel"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 18px;
+            text-align: left;
+            font-size: 16px;
         }
 
         button {
@@ -68,16 +80,6 @@
 
         button:hover {
             background-color: #45a049;
-        }
-
-        @media (max-width: 600px) {
-            .form-container {
-                padding: 15px;
-            }
-
-            button {
-                font-size: 16px;
-            }
         }
 
         .error {
@@ -100,10 +102,10 @@
             <label for="dataFinal">Data Final (dd/mm/aaaa)</label>
             <input type="tel" id="dataFinal" name="dataFinal" placeholder="Ex: 01/01/2024" value="" maxlength="10">
 
-            <label for="valor">Valor</label>
+            <label for="valor">Valor R$</label>
             <input type="tel" id="valor" name="valorCorrecao" placeholder="Digite o valor" value="100,00">
 
-            <label for="valorCdi">Valor CDI</label>
+            <label for="valorCdi">% do CDI</label>
             <input type="tel" id="valorCdi" name="percentualCorrecao" placeholder="Digite o valor CDI" value="100,00">
 
             <button type="submit">Enviar</button>
