@@ -44,6 +44,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+            font-size: 18px;
         }
 
         button {
@@ -69,19 +70,26 @@
                 font-size: 16px;
             }
         }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            display: none;
+            /* Inicialmente escondendo as mensagens de erro */
+        }
     </style>
 </head>
 
 <body>
     <div class="form-container">
         <h2>Calculadora CDI</h2>
-        <form action="https://www3.bcb.gov.br/CALCIDADAO/publico/corrigirPeloCDI.do?method=corrigirPeloCDI"
+        <form id="cdiForm" action="https://www3.bcb.gov.br/CALCIDADAO/publico/corrigirPeloCDI.do?method=corrigirPeloCDI"
             method="post">
             <label for="dataInicial">Data Inicial (dd/mm/aaaa)</label>
-            <input type="tel" id="dataInicial" name="dataInicial" placeholder="Ex: 01/01/2024" value="" maxlength="10">
+            <input type="tel" id="dataInicial" name="dataInicial" placeholder="Ex: 01/01/2023" value="" maxlength="10">
 
             <label for="dataFinal">Data Final (dd/mm/aaaa)</label>
-            <input type="tel" id="dataFinal" name="dataFinal" placeholder="Ex: 31/12/2024" value="" maxlength="10">
+            <input type="tel" id="dataFinal" name="dataFinal" placeholder="Ex: 01/01/2024" value="" maxlength="10">
 
             <label for="valor">Valor</label>
             <input type="tel" id="valor" name="valorCorrecao" placeholder="Digite o valor" value="100,00">
@@ -90,6 +98,7 @@
             <input type="tel" id="valorCdi" name="percentualCorrecao" placeholder="Digite o valor CDI" value="100,00">
 
             <button type="submit">Enviar</button>
+            <div class="error" id="errorMessage">Por favor, preencha todos os campos.</div> <!-- Mensagem de erro -->
         </form>
     </div>
 </body>
@@ -146,6 +155,24 @@
     document.getElementById('valorCdi').addEventListener('input', function () {
         aplicarMascaraValor(this);
     });
+
+    // Validação do formulário
+    document.getElementById('cdiForm').addEventListener('submit', function (event) {
+        const dataInicial = document.getElementById('dataInicial').value.trim();
+        const dataFinal = document.getElementById('dataFinal').value.trim();
+        const valor = document.getElementById('valor').value.trim();
+        const valorCdi = document.getElementById('valorCdi').value.trim();
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Limpar mensagem de erro antes da validação
+        errorMessage.style.display = 'none';
+
+        // Verificar se algum campo está vazio
+        if (!dataInicial || !dataFinal || !valor || !valorCdi) {
+            errorMessage.style.display = 'block'; // Exibir mensagem de erro
+            event.preventDefault(); // Impedir o envio do formulário
+        }
+    });    
 </script>
 
 </html>
